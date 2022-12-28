@@ -10,4 +10,6 @@ Docker start –a 6a4
 
 -Remove the image
 Docker image ls
+
+
 Docker image rm image
