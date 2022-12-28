@@ -1,0 +1,8 @@
+Create a volume called mysql_data, then deploy a MySQL database called app-
+database. Use the mysql latest image, and use the -e flag to set
+MYSQL_ROOT_PASSWORD to P4sSw0rd0!.Mount the mysql_data volume to
+/var/lib/mysql. The container should run in the background.
+
+Docker volume create app-database
+Docker pull mysql
+Docker run –d –v app-database:/var/lib/mysql -e “MYSQL_ROOT_PASSWORD=P4sSw0rd0!” mysql

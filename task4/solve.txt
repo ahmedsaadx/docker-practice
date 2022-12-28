@@ -1,0 +1,12 @@
+-Run the image httpd again without attaching any Volumes
+-Add html static files to the container and make sure they are accessible
+docker run -it --name nginx -p 8000:80 nginx bash
+
+-Commit the container with image name myApache
+Docker commit nginx myapache
+Docker image ls
+
+
+- Create a dockerfile for ngnix and build the image from this dockerfile
+Docker build –t nginx:latest .
+
