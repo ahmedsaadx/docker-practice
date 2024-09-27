@@ -1,0 +1,89 @@
+{{ define "slack.default" }}
+{
+  "attachments": [
+    {
+      "color": "#FF0000",
+      "title": "🚨 Alert: {{ or .CommonLabels.alertname "No Alertname" }} 🚨",
+      "fields": [
+        {
+          "title": "Severity",
+          "value": "{{ or .CommonLabels.severity "No Severity" }}",
+          "short": true
+        },
+        {
+          "title": "Summary",
+          "value": "{{ or .CommonAnnotations.summary "No Summary" }}",
+          "short": false
+        },
+        {
+          "title": "Description",
+          "value": "{{ or .CommonAnnotations.description "No Description" }}",
+          "short": false
+        },
+        {
+          "title": "Raw Data",
+          "value": "{{ . }}",
+          "short": false
+        }
+      ]
+    }
+  ]
+}
+{{ if gt (len .Alerts.Firing) 0 }}
+{
+  "attachments": [
+    {
+      "color": "#FF0000",
+      "title": "Firing Alerts:",
+      "fields": [
+        {{ range .Alerts.Firing }}
+        {
+          "title": "Alert",
+          "value": "- Summary: {{ or .Annotations.summary "No Summary" }}\n  Description: {{ or .Annotations.description "No Description" }}\n  Instance: {{ or .Labels.instance "No Instance" }}",
+          "short": false
+        }
+        {{ end }}
+      ]
+    }
+  ]
+}
+{{ else }}
+{
+  "attachments": [
+    {
+      "color": "#36a64f",
+      "title": "No Firing Alerts"
+    }
+  ]
+}
+{{ end }}
+{{ if gt (len .Alerts.Resolved) 0 }}
+{
+  "attachments": [
+    {
+      "color": "#36a64f",
+      "title": "Resolved Alerts:",
+      "fields": [
+        {{ range .Alerts.Resolved }}
+        {
+          "title": "Alert",
+          "value": "- Summary: {{ or .Annotations.summary "No Summary" }}\n  Description: {{ or .Annotations.description "No Description" }}\n  Instance: {{ or .Labels.instance "No Instance" }}",
+          "short": false
+        }
+        {{ end }}
+      ]
+    }
+  ]
+}
+{{ else }}
+{
+  "attachments": [
+    {
+      "color": "#36a64f",
+      "title": "No Resolved Alerts"
+    }
+  ]
+}
+{{ end }}
+{{ end }}
+

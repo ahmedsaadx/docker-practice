@@ -1,0 +1,27 @@
+{{ define "telegram_new.tmpl" }}
+🚨 Alert: {{ .CommonLabels.alertname }}
+Severity: {{ .CommonLabels.severity }}
+Summary: {{ .CommonAnnotations.summary }}
+Description: {{ .CommonAnnotations.description }}
+
+{{ if gt (len .Alerts.Firing) 0 }}
+Firing Alerts:
+{{ range .Alerts.Firing }}
+- Summary: {{ .Annotations.summary }}
+  Instance: {{ .Labels.instance }}
+{{ end }}
+{{ else }}
+No Firing Alerts
+{{ end }}
+
+{{ if gt (len .Alerts.Resolved) 0 }}
+Resolved Alerts:
+{{ range .Alerts.Resolved }}
+- Summary: {{ .Annotations.summary }}
+  Instance: {{ .Labels.instance }}
+{{ end }}
+{{ else }}
+No Resolved Alerts
+{{ end }}
+{{ end }}
+

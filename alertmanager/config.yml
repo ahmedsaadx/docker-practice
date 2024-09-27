@@ -1,0 +1,60 @@
+route:
+  group_by: ['alertname', 'severity']
+  group_wait: 30s
+  group_interval: 90s
+  repeat_interval: 8h
+  receiver: 'default-receiver'
+  routes:
+    - matchers:
+      - severity="critical"
+      group_by: ['alertname']
+      receiver: 'critical-receiver'
+      continue: true
+    - matchers:
+      - severity="warning"
+      group_by: ['alertname']
+      receiver: 'warning-receiver'
+      continue: true
+receivers:
+  - name: 'default-receiver'
+    webhook_configs:
+      - url: 'http://127.0.0.1:5001/'
+  - name: 'critical-receiver'
+    slack_configs:
+      - channel: '#alerts'
+        api_url: 'https://hooks.slack.com/'
+        send_resolved: true
+    email_configs:
+      - to: 
+        from: 
+        smarthost: 
+        auth_username: 
+        auth_identity: 
+        auth_password: 
+        send_resolved: 
+    telegram_configs:
+    - api_url: https://api.telegram.org
+      bot_token: 
+      chat_id: 
+      message: '{{ template "telegram_new.tmpl" . }}'
+  - name: 'warning-receiver'
+    email_configs:
+      - to: 
+        from: 
+        smarthost:
+        auth_username: 
+        auth_identity:
+        auth_password: 
+        send_resolved:
+    slack_configs:
+      - channel: '#alerts'
+        api_url: ''
+        send_resolved: true
+    telegram_configs:
+      - api_url: 'https://api.telegram.org'
+        bot_token: 
+        chat_id:
+        message: '{{ template "telegram_new.tmpl" . }}'
+templates:
+  - '/etc/alertmanager/template/telegram_new.tmpl'
+  - '/etc/alertmanager/template/slack.tmpl'
