@@ -1,0 +1,21 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+- url: http://loki-dev.dafagate.com/loki/api/v1/push
+  basic_auth: 
+      username: admin1
+      password: yhFhUdQZrsmLFh4J6vE0
+scrape_configs:
+- job_name: system
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: savvy_api
+      #NOTE: Need to be modified to scrape any additional logs of the system.
+      __path__: /var/www/storage/logs/laravel.log
