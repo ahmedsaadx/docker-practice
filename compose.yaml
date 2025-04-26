@@ -87,7 +87,7 @@ services:
       - 9093:9093
     volumes:
       - ./alertmanager/:/etc/alertmanager/
-    restart: always
+    restart: unless-stopped
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
@@ -95,9 +95,9 @@ services:
       - monitoring
   grafana:
     image: grafana/grafana:latest
-    user: ${USER_ID}
+    #user: ${USER_ID}
     volumes:
-      - ./config/grafana:/var/lin/grafana
+      - ./config/grafana:/var/lib/grafana
     ports:
       - "127.0.0.1:3001:3000"
     restart: unless-stopped
